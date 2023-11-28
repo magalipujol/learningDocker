@@ -1,5 +1,6 @@
 var express = require("express");
 var bodyParser = require("body-parser");
+var path = require("path");
 
 
 var app = express();
@@ -11,6 +12,8 @@ app.listen(3000, () => {
     console.log("Server running on port 3000");
 });
 
+// Serve static files (like your HTML) from the "public" directory
+app.use(express.static(path.join(__dirname, "public")));
 var names = ["Peco", "Peke", "Pecos", "Quepe", "Quepos"];
 
 app.get("/names", (req, res, next) => {
@@ -36,4 +39,10 @@ app.post("/names", (req, res, next) => {
     } else {
         res.status(400).json({ message: "Invalid request. Please provide a name in the request body." });
     }
+});
+
+
+// Catch-all route to serve your HTML file
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
