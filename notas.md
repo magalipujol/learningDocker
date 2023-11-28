@@ -1,4 +1,6 @@
-    docker run  -v ${PWD}:/peke --entrypoint bash -ti node
+    docker run  -v ${PWD}:/peke --entrypoint bash -w /peke -p 3000:3000 -ti node
+
+TODO completar
 
 - docker run: creo el contenedor
 - -v ${PWD}:/peke: le agrego al volumen el contenido de donde estoy parada (learningDocker)
