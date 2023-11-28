@@ -26,6 +26,8 @@
       placeholder="Enter a name to delete"
     />
     <button onclick="deleteName()">Delete Name</button>
+    <!-- Add this span to display the error message -->
+    <span id="deleteErrorMessage" style="color: red"></span>
 
     <script>
       // Function to fetch and display the list of names
@@ -69,15 +71,30 @@
         const deleteNameInput = document.getElementById("deleteNameInput");
         const nameToDelete = deleteNameInput.value;
 
+        // Clear any previous error message
+        const errorMessageSpan = document.getElementById("deleteErrorMessage");
+        errorMessageSpan.textContent = "";
+
         fetch(`/names/${nameToDelete}`, {
           method: "DELETE",
         })
-          .then((response) => response.json())
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                `Error deleting name: ${response.status} - ${response.statusText}`
+              );
+            }
+            return response.json();
+          })
           .then((data) => {
             console.log("Name deleted successfully:", data.message);
             getNames(); // Refresh the list of names
           })
-          .catch((error) => console.error("Error deleting name:", error));
+          .catch((error) => {
+            console.error(error.message);
+            // Display the error in the front end using the span
+            errorMessageSpan.textContent = `Error: ${error.message}`;
+          });
 
         // Clear the input field
         deleteNameInput.value = "";
