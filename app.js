@@ -22,6 +22,7 @@ app.get("/names", (req, res, next) => {
 
 app.delete("/names/:name", (req, res, next) => {
     const nameToDelete = req.params.name;
+    console.log(nameToDelete);
     const index = names.indexOf(nameToDelete);
     if (index !== -1) {
         names.splice(index, 1);
